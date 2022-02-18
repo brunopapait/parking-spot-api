@@ -1,11 +1,13 @@
 package br.com.papait.bruno.api.parkingcontrol.service;
 
-import br.com.papait.bruno.api.parkingcontrol.model.ParkingSpot;
+import br.com.papait.bruno.api.parkingcontrol.model.ParkingSpotModel;
 import br.com.papait.bruno.api.parkingcontrol.repository.ParkingSpotRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ParkingSpotService {
@@ -17,7 +19,7 @@ public class ParkingSpotService {
   }
 
   @Transactional
-  public ParkingSpot save(ParkingSpot parkingSpot) {
+  public ParkingSpotModel save(ParkingSpotModel parkingSpot) {
     return parkingSpotRepository.save(parkingSpot);
   }
 
@@ -33,7 +35,11 @@ public class ParkingSpotService {
     return parkingSpotRepository.existsByApartmentAndBlock(apartment, block);
   }
 
-  public List<ParkingSpot> findAll() {
+  public List<ParkingSpotModel> findAll() {
     return parkingSpotRepository.findAll();
+  }
+
+  public Optional<ParkingSpotModel> findById(UUID id) {
+    return parkingSpotRepository.findById(id);
   }
 }

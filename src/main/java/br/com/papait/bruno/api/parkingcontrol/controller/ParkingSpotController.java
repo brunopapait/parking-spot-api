@@ -1,7 +1,7 @@
 package br.com.papait.bruno.api.parkingcontrol.controller;
 
 import br.com.papait.bruno.api.parkingcontrol.dto.ParkingSpotDTO;
-import br.com.papait.bruno.api.parkingcontrol.model.ParkingSpot;
+import br.com.papait.bruno.api.parkingcontrol.model.ParkingSpotModel;
 import br.com.papait.bruno.api.parkingcontrol.service.ParkingSpotService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -39,7 +41,7 @@ public class ParkingSpotController {
       return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Parking Spot already registered for this apartment/block!");
     }
 
-    ParkingSpot parkingSpot = new ParkingSpot();
+    ParkingSpotModel parkingSpot = new ParkingSpotModel();
     BeanUtils.copyProperties(parkingSpotDTO, parkingSpot);
 
     parkingSpot.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
@@ -48,8 +50,19 @@ public class ParkingSpotController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ParkingSpot>> getAllParkingSpots() {
+  public ResponseEntity<List<ParkingSpotModel>> getAllParkingSpots() {
     return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll());
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
+    Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
+
+    if (!parkingSpotModelOptional.isPresent()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking sport not found.");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
   }
 
 
