@@ -19,7 +19,7 @@ public class ParkingSpotDTO {
 
   @NotBlank
   @Size(max = 70)
-  private String modalCar;
+  private String modelCar;
 
   @NotBlank
   @Size(max = 70)
@@ -61,12 +61,12 @@ public class ParkingSpotDTO {
     this.brandCar = brandCar;
   }
 
-  public String getModalCar() {
-    return modalCar;
+  public String getModelCar() {
+    return modelCar;
   }
 
-  public void setModalCar(String modalCar) {
-    this.modalCar = modalCar;
+  public void setModelCar(String modelCar) {
+    this.modelCar = modelCar;
   }
 
   public String getColorCar() {
